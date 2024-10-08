@@ -8,11 +8,11 @@ const TURNS = {
 
 const board = Array(9).fill(null);
 
-const Squere = ({ index, isSelected, update, children }) => {
+const Cuadrado = ({ children, isSelected, update, index }) => {
   const className = `square ${isSelected ? "is-selected" : ""}`;
 
   const handelClick = () => {
-    update( index);
+    update(index);
   };
 
   return (
@@ -25,35 +25,33 @@ const Squere = ({ index, isSelected, update, children }) => {
 function App() {
   // actualiza el tablero
 
+  // estados con el que inicia un app
+  const [turn, setTurn] = useState(TURNS.X);
   const [board, setBoard] = useState(Array(9).fill(null));
 
-  
-
-  const [turn, setTurn] = useState(TURNS.X);
   const update = (index) => {
-
+    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
+    setTurn(newTurn);
     const newBoard = [...board];
+    newBoard[index] = turn;
     setBoard(newBoard);
-    const nuevoTurno = turn === TURNS.X ? TURNS.O : TURNS.X;
-    setTurn(nuevoTurno);
-
-    
   };
-  
 
   return (
     <main className="board">
-      <h1>Tic Tac Toe</h1>
+      <h1>Gato Game</h1>
       <section className="game">
-        {board.map((_, index) => (
-          <Squere key={index} index={index} update={update}>
-            {board[index]}
-          </Squere>
-        ))}
+        {board.map((_, index) => {
+          return (
+            <Cuadrado key={index} index={index} update={update}>
+              {board[index]}
+            </Cuadrado>
+          );
+        })}
       </section>
       <section className="turn">
-        <Squere isSelected={TURNS.X === turn}>{TURNS.X}</Squere>
-        <Squere isSelected={TURNS.O === turn}>{TURNS.O}</Squere>
+        <Cuadrado isSelected={turn === TURNS.X}>{TURNS.X}</Cuadrado>
+        <Cuadrado isSelected={turn === TURNS.O}>{TURNS.O}</Cuadrado>
       </section>
     </main>
   );
