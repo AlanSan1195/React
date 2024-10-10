@@ -1,40 +1,56 @@
 import "./App.css";
 import { useState } from "react";
+import { Cuadrado } from "./components/Cuadrado";
+import { Modal } from "./Modal";
+import { TURNS} from "./components/Constantes";
+import {checkWinner} from "./components/LogicWinner"
+import confetti from "canvas-confetti";
 
-const TURNS = {
-  X: "x",
-  O: "o",
-};
 
-const board = Array(9).fill(null);
 
-const Cuadrado = ({ children, isSelected, update, index }) => {
-  const className = `square ${isSelected ? "is-selected" : ""}`;
-
-  const handelClick = () => {
-    update(index);
-  };
-
-  return (
-    <div onClick={handelClick} className={className}>
-      {children}
-    </div>
-  );
-};
+  
 
 function App() {
-  // actualiza el tablero
 
   // estados con el que inicia un app
   const [turn, setTurn] = useState(TURNS.X);
   const [board, setBoard] = useState(Array(9).fill(null));
+  const [winner, setWinner] = useState(null);
 
+// RESETEAR
+// en React esto es asi podemos restablecer filtros busquedas y 
+//  cualquier cosa  solo con regresar los estados a sus valores 
+// iniciales 
+  function resetGame () {
+    setTurn(TURNS.X);
+    setBoard(Array(9).fill(null))
+    setWinner(null)
+  }
+
+  const checkEndGame = (newBoard)=>{
+    return newBoard.every((cuadrado)=>cuadrado !== null)
+  }
+
+  //actualiza el turno y el tablero
   const update = (index) => {
-    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
-    setTurn(newTurn);
+    if (board[index] || winner) return;
+    //tablero
     const newBoard = [...board];
     newBoard[index] = turn;
     setBoard(newBoard);
+    //turno
+    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
+    setTurn(newTurn);
+    //ganador
+    const newWinner = checkWinner(newBoard);
+    if (newWinner) {
+      confetti()
+      setWinner(newWinner);
+      console.log(winner);
+    } else if (checkEndGame(newBoard) ){
+      setWinner(false)
+
+    }
   };
 
   return (
@@ -53,6 +69,12 @@ function App() {
         <Cuadrado isSelected={turn === TURNS.X}>{TURNS.X}</Cuadrado>
         <Cuadrado isSelected={turn === TURNS.O}>{TURNS.O}</Cuadrado>
       </section>
+
+      <Modal winner={winner} resetGame={resetGame} />
+
+
+
+      
     </main>
   );
 }
