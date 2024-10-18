@@ -17,7 +17,6 @@ function App() {
       <TwitterFollowCard userName="pheralb" name= "Deigo Armando" />
       <TwitterFollowCard userName="illojuan" name= "Juan Ortega"/>
     </section>
-
   );
 }
 
