@@ -4,6 +4,8 @@ const MouseFollow = () => {
   const [enabled, setEnabled] = useState(false);
   const [posision, setPosision] = useState({ x: 0, y: 0 });
 
+  
+ // pointer muve
   useEffect(() => {
     console.log("activaste efeccto ", { enabled });
 
@@ -18,6 +20,22 @@ const MouseFollow = () => {
       window.removeEventListener("pointermove", eventoMouse);
     };
   }, [enabled]);
+
+  // cambio de cursor
+  useEffect(()=>{
+
+    document.body.classList.toggle("no-cursor",enabled)
+
+
+    //limpiar siempre todas las subscripciones
+    return ()=>{
+      document.body.classList.remove("no-cursor")
+    }
+
+  }, [enabled])
+
+
+
   return (
     <>
       <div

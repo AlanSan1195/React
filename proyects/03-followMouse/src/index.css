@@ -35,3 +35,6 @@ button:hover {
   place-items:center;
   gap: 20px;
 }
+body.no-cursor{
+  cursor: none;
+}
