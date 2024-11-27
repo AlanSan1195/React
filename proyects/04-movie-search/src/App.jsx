@@ -1,10 +1,11 @@
 import "./App.css";
 import { Movies } from "./components/movies";
-import whitResult from "./mocks/whit-result.json";
+import { useMovies } from "./hooks/useMovies.js";
+
 
 
 function App() {
-  const movies = whitResult.Search;
+ const {movies: mapOfMOvies} = useMovies()
 
 
   return (
@@ -17,7 +18,7 @@ function App() {
         </form>
       </div>
       <main>
-        <Movies movies={movies} />
+        <Movies movies={mapOfMOvies} />
       </main>
     </>
   );
